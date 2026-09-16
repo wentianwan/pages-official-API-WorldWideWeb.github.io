@@ -24,7 +24,7 @@
   --transition:all .25s cubic-bezier(.4,0,.2,1);
   --transition-slow:all .4s cubic-bezier(.4,0,.2,1);
   --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-  --z-watermark:9999;--z-nav:100;--z-modal:200;--z-html:300;--z-img:400;--z-toast:500;--z-monitor:9998
+  --z-watermark:2147483647;--z-nav:100;--z-modal:200;--z-html:300;--z-img:2147483646;--z-toast:500;--z-monitor:9998
 }
 *,::before,::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent!important;-webkit-touch-callout:none!important;-webkit-user-select:none!important;-khtml-user-select:none!important;-moz-user-select:none!important;-ms-user-select:none!important;user-select:none!important;outline:none!important;box-shadow:none!important}
 body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;-webkit-text-size-adjust:100%;transition:background .4s,color .4s;font-size:14px;line-height:1.6}
@@ -94,9 +94,14 @@ img{max-width:100%;display:block;pointer-events:none;-webkit-user-drag:none}
 .show-html-btn{display:block!important;margin:0 auto 18px;padding:12px 0;width:60%;min-width:140px;max-width:240px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;border:none;border-radius:var(--radius-sm);font-size:15px;cursor:pointer;text-align:center;position:relative;font-weight:600;transform:translate3d(0,0,0);transition:var(--transition-fast);box-shadow:0 4px 14px var(--shadow-primary)}
 .show-html-btn:hover{box-shadow:0 6px 20px var(--shadow-primary);transform:translate3d(0,-1px,0)}
 .show-html-btn:active{transform:scale(0.96)}
-.img-modal{position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:var(--z-img);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:var(--transition)}
+.img-modal{position:fixed;inset:0;background:rgba(0,0,0,0.95);z-index:var(--z-img);display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:var(--transition);backdrop-filter:blur(8px)}
 .img-modal.active{opacity:1;visibility:visible}
-.img-modal img{max-width:95%;max-height:95%;object-fit:contain;cursor:pointer;display:block;border-radius:var(--radius-sm)}
+.img-modal .img-container{position:relative;max-width:95vw;max-height:95vh;display:flex;align-items:center;justify-content:center}
+.img-modal .img-container img{max-width:100%;max-height:95vh;object-fit:contain;display:block;border-radius:var(--radius-sm);user-select:none;-webkit-user-drag:none;transition:transform .3s cubic-bezier(.4,0,.2,1);transform-origin:center center}
+.img-modal .img-watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;pointer-events:none;z-index:10;overflow:hidden}
+.img-modal .img-watermark span{display:block;width:100%;text-align:center;font-size:clamp(14px,3.5vw,28px);color:rgba(255,255,255,0.18);font-weight:600;transform:rotate(-12deg);letter-spacing:2px;text-shadow:0 1px 4px rgba(0,0,0,0.3)}
+.img-modal .img-hint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.6);color:rgba(255,255,255,0.7);font-size:12px;padding:6px 14px;border-radius:20px;pointer-events:none;opacity:0;transition:opacity .3s}
+.img-modal.active .img-hint{opacity:1;transition-delay:.5s}
 .loading{padding:50px;text-align:center;color:var(--text-secondary);font-size:15px}
 .loading-sub{display:inline-block;margin-left:8px;color:var(--primary);font-size:13px;font-weight:500}
 .loading-bar{width:100%;height:3px;background:var(--border);margin-top:12px;border-radius:2px;overflow:hidden}
@@ -105,14 +110,14 @@ img{max-width:100%;display:block;pointer-events:none;-webkit-user-drag:none}
 .pager{display:flex;justify-content:center;align-items:center;gap:12px;padding:20px;white-space:nowrap}
 .pager button{padding:12px 24px;border:none;background:var(--primary);color:#fff;border-radius:var(--radius-sm);cursor:pointer;font-size:14px;font-weight:600;transition:var(--transition-fast)}
 .pager button:hover{background:var(--primary-dark);box-shadow:0 4px 12px var(--shadow-primary)}
-.pager button:disabled{background:var(--text-disabled);cursor:not-allowed;opacity:0.5;box-shadow:none}
+.pager button:disabled{background:var(--text-disabled)!important;cursor:not-allowed!important;opacity:0.35!important;box-shadow:none!important;transform:none!important}
 .pager button:active:not(:disabled){transform:scale(0.95)}
 .pager .page-info{line-height:40px;color:var(--text-secondary);font-size:13px;font-weight:500}
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--text);border:1px solid var(--border-heavy);color:var(--bg);padding:12px 24px;border-radius:var(--radius-sm);z-index:var(--z-toast);transition:transform .35s cubic-bezier(.4,0,.2,1);font-size:14px;font-weight:500;box-shadow:0 8px 30px var(--shadow-lg);pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast.toast-error{background:var(--error);color:#fff}
 .toast.toast-success{background:var(--success);color:#fff}
-.sentinel{height:1px;width:100%}
+.sentinel{height:1px;width:100%;margin-top:10px}
 @media(min-width:769px){
   #app{max-width:480px;margin:0 auto;box-shadow:0 0 40px var(--shadow-md);position:relative;border-radius:var(--radius-sm);overflow:hidden}
   body{display:flex;justify-content:center;align-items:flex-start;padding-top:20px;background:var(--border-light)}
@@ -141,7 +146,6 @@ img{max-width:100%;display:block;pointer-events:none;-webkit-user-drag:none}
 <div id="app">
   <div class="pc-header"></div>
   <div class="mobile-header"></div>
-
   <div class="content-area">
     <div class="section-search" id="sectionSearch">
       <input id="secKey" placeholder="输入关键词查询">
@@ -149,7 +153,6 @@ img{max-width:100%;display:block;pointer-events:none;-webkit-user-drag:none}
       <div class="search-history" id="searchHistory"></div>
     </div>
   </div>
-
   <div class="mobile-nav"></div>
 </div>
 
@@ -174,7 +177,11 @@ img{max-width:100%;display:block;pointer-events:none;-webkit-user-drag:none}
 </div>
 
 <div class="img-modal">
-  <img>
+  <div class="img-container">
+    <img>
+    <div class="img-watermark"><span></span></div>
+    <div class="img-hint">点击任意处关闭</div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -187,18 +194,12 @@ function mark(n){PERF.marks[n]=Math.round(performance.now()-startTime)+'ms';}
 
 var SCHED={
   debounce:function(f,w){
-    var t;
-    return function(){
-      var a=arguments;
-      clearTimeout(t);
-      t=setTimeout(function(){f.apply(this,a);},w||300);
-    };
+    var t;return function(){var a=arguments;clearTimeout(t);t=setTimeout(function(){f.apply(this,a);},w||300);};
   },
   throttle:function(f,w){
     var last=0,pend=null;
     return function(){
-      var a=arguments;
-      var now=Date.now();
+      var a=arguments,now=Date.now();
       if(now-last>=w){last=now;f.apply(this,a);}
       else{pend=a;setTimeout(function(){if(pend){last=now;f.apply(this,pend);pend=null;}},w-(now-last));}
     };
@@ -208,7 +209,7 @@ var SCHED={
 var cfg={},cur="",pageState={},cacheAll={},retryCount=0,
     refreshCount=parseInt(sessionStorage.getItem('refreshCount')||'0'),
     state={route:"",scrollPos:{},modalStack:[],searchQuery:"",retryMap:{},cacheMeta:{},theme:'white'},
-    bus={events:{}},requestQueue=[],activeRequests=0,searchIndex={},renderVersion=0,idleScheduled=false;
+    requestQueue=[],activeRequests=0,searchIndex={},renderVersion=0,idleScheduled=false;
 
 var CONFIG_URL="https://api.tianbin.org/api/";
 var PRIORITY={CRITICAL:0,HIGH:1,NORMAL:2,LOW:3};
@@ -235,7 +236,7 @@ document.addEventListener("copy",ban);
 document.addEventListener("cut",ban);
 document.addEventListener("dragstart",ban);
 document.addEventListener("keydown",function(e){
-  if(e.key==="F12"||(e.ctrlKey&&e.shiftKey&&e.key==="I")||(e.ctrlKey&&e.shiftKey&&e.key==="C")||(e.ctrlKey&&e.key==="J")||(e.ctrlKey&&e.key==="U")||(e.ctrlKey&&e.key==="S")||(e.ctrlKey&&e.key==="P")||(e.ctrlKey&&e.key==="s")||(e.ctrlKey&&e.key==="u")||(e.ctrlKey&&e.key==="p")||(e.ctrlKey&&e.key==="a")||(e.ctrlKey&&e.key==="A")||(e.ctrlKey&&e.metaKey)||(e.altKey&&e.key==="F4")){ban(e);return false;}
+  if(e.key==="F12"||(e.ctrlKey&&e.shiftKey&&e.key==="I")||(e.ctrlKey&&e.shiftKey&&e.key==="C")||(e.ctrlKey&&e.key==="J")||(e.ctrlKey&&e.key==="U")||(e.ctrlKey&&e.key==="S")||(e.ctrlKey&&e.key==="P")||(e.ctrlKey&&e.shiftKey&&e.key==="J")||(e.ctrlKey&&e.metaKey)||(e.altKey&&e.key==="F4")){ban(e);return false;}
 });
 
 Object.defineProperty(document,"hidden",{get:function(){return false;}});
@@ -245,8 +246,6 @@ setInterval(function(){
   }
 },2000);
 setInterval(function(){try{console.clear();Object.defineProperty(console,"log",{value:function(){}});}catch(e){}},500);
-try{new Function("debugger")();}catch(e){}
-setInterval(function(){try{if(window.devtools&&window.devtools.open){window.location.href=(cfg.security&&cfg.security.devtoolsRedirect)||"http://www.tianbin.net";}}catch(e){}},1000);
 
 window.addEventListener('error',function(e){console.error('[ERR]',e.message,e.filename,e.lineno);});
 window.addEventListener('unhandledrejection',function(e){console.error('[REJ]',e.reason);});
@@ -255,14 +254,11 @@ var bc=new BroadcastChannel('tianbin_sync');
 bc.onmessage=function(e){
   var d=e.data;
   if(d.type==='tab-switch'&&d.tab&&d.tab!==cur){switchTab(d.tab,true);}
-  if(d.type==='theme-change'){state.theme=d.theme;}
 };
 
 function $(s,p){return(p||document).querySelector(s);}
 function $$
 (s,p){return[].slice.call((p||document).querySelectorAll(s));}
-
-bus.on=function(name,fn){if(!bus.events[name])bus.events[name]=[];bus.events[name].push(fn);};
 
 function fetchWithTimeout(url,timeout){
   return Promise.race([fetch(url,{cache:"no-store"}),new Promise(function(_,rej){setTimeout(function(){rej(new Error('timeout'));},timeout||1000);})]);
@@ -279,24 +275,14 @@ function enqueueRequest(fn,priority){
 function drainQueue(){
   if(activeRequests>=((cfg.behavior&&cfg.behavior.concurrencyLimit)||3))return;
   if(requestQueue.length===0)return;
-  var req=requestQueue.shift();
-  activeRequests++;
+  var req=requestQueue.shift();activeRequests++;
   req.fn().then(req.resolve).catch(req.reject).finally(function(){activeRequests--;drainQueue();});
 }
 
-function backoffRetry(key,fn){
-  var maxRetries=(cfg.behavior&&cfg.behavior.retryBackoff&&cfg.behavior.retryBackoff.length)||3;
-  state.retryMap[key]=(state.retryMap[key]||0);
-  if(state.retryMap[key]>=maxRetries)return Promise.reject(new Error('max retries'));
-  var delay=(cfg.behavior&&cfg.behavior.retryBackoff&&cfg.behavior.retryBackoff[state.retryMap[key]])||1000;
-  state.retryMap[key]++;
-  return new Promise(function(res){setTimeout(res,delay);}).then(fn);
-}
-
 function getSectionConf(id){return(cfg.sections&&cfg.sections[id])||{};}
-function getPerPage(id){return getSectionConf(id).perPage||5;}
+function getPerPage(id){return getSectionConf(id).perPage||10;}
 function getSearchable(id){return!!getSectionConf(id).searchable;}
-function getSortBy(id){return getSectionConf(id).sortBy||"";}
+function getSortBy(id){return getSectionConf(id).sortBy||"date";}
 function getSortOrder(id){return getSectionConf(id).sortOrder||"desc";}
 function getSearchFields(id){return getSectionConf(id).searchFields||["title"];}
 function getSearchMode(id){return getSectionConf(id).searchMode||"simple";}
@@ -310,19 +296,16 @@ function buildSearchIndex(sid){
   var list=cacheAll[sid]||[];
   var fields=getSearchFields(sid);
   searchIndex[sid]=list.map(function(item,idx){
-    var text="";
-    fields.forEach(function(f){text+=(item[f]||"")+" ";});
+    var text="";fields.forEach(function(f){text+=(item[f]||"")+" ";});
     return{idx:idx,text:text.toLowerCase(),item:item};
   });
 }
 
 function weightedSearch(sid,query){
   if(!searchIndex[sid])buildSearchIndex(sid);
-  var q=query.toLowerCase();
-  var fields=getSearchFields(sid);
+  var q=query.toLowerCase();var fields=getSearchFields(sid);
   var results=searchIndex[sid].map(function(entry){
-    var score=0;
-    var item=entry.item;
+    var score=0;var item=entry.item;
     fields.forEach(function(f,i){
       var val=(item[f]||"").toLowerCase();
       if(val===q)score+=100-i*10;
@@ -336,11 +319,8 @@ function weightedSearch(sid,query){
 }
 
 function simpleSearch(sid,query){
-  var fields=getSearchFields(sid);
-  var q=query.toLowerCase();
-  return(cacheAll[sid]||[]).filter(function(it){
-    return fields.some(function(f){var v=(it[f]||"").toLowerCase();return v.indexOf(q)>=0;});
-  });
+  var fields=getSearchFields(sid);var q=query.toLowerCase();
+  return(cacheAll[sid]||[]).filter(function(it){return fields.some(function(f){var v=(it[f]||"").toLowerCase();return v.indexOf(q)>=0;});});
 }
 
 function highlightText(text,query){
@@ -360,7 +340,7 @@ function renderCanvasWatermark(){
   var ctx=canvas.getContext('2d');
   canvas.width=window.innerWidth;canvas.height=window.innerHeight;
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  var text=(cfg.security&&cfg.security.watermarkText)||'起点小说《天彬》';
+  var text=(cfg.security&&cfg.security.watermarkText)||'天彬TianBIN';
   ctx.font='14px -apple-system,sans-serif';
   ctx.fillStyle='#4a9eff';
   ctx.globalAlpha=0.5;
@@ -379,40 +359,15 @@ function preloadAll(){
   Object.keys(cfg.sections).forEach(function(s){
     if(s===cur)return;
     enqueueRequest(function(){
-      return fetchWithTimeout((cfg.apiBase||"https://api.tianbin.org/api/")+cfg.sections[s].api+"?_="+Date.now(),cfg.behavior&&cfg.behavior.requestTimeout||1000)
-        .then(function(r){return r.json();})
-        .then(function(j){cacheAll[s]=j;})
-        .catch(function(){});
+      return fetchWithTimeout((cfg.apiBase||"https://api.tianbin.org/api/")+cfg.sections[s].api+"?_="+Date.now())
+        .then(function(r){return r.json();}).then(function(j){cacheAll[s]=j;}).catch(function(){});
     },PRIORITY.LOW).catch(function(){});
   });
 }
 
-function scheduleIdlePreload(){
-  if(idleScheduled)return;
-  idleScheduled=true;
-  if('requestIdleCallback' in window){
-    requestIdleCallback(function(){
-      idleScheduled=false;
-      var keys=Object.keys(cfg.sections||{});
-      var unloaded=keys.filter(function(k){return!cacheAll[k]&&k!==cur;});
-      if(unloaded.length>0){
-        var next=unloaded[0];
-        enqueueRequest(function(){
-          return fetchWithTimeout((cfg.apiBase||"https://api.tianbin.org/api/")+cfg.sections[next].api+"?_="+Date.now())
-            .then(function(r){return r.json();})
-            .then(function(j){cacheAll[next]=j;})
-            .catch(function(){});
-        },PRIORITY.LOW);
-      }
-    });
-  }
-}
-
 function hardRecover(msg){
-  console.warn('[recover]',msg);
   try{localStorage.clear();sessionStorage.clear();}catch(e){}
   if('caches' in window){caches.keys().then(function(n){n.forEach(function(n){caches.delete(n);});});}
-  if('serviceWorker' in navigator){navigator.serviceWorker.getRegistrations().then(function(regs){regs.forEach(function(r){r.unregister();});});}
   setTimeout(function(){location.reload(true);},800);
 }
 
@@ -428,18 +383,14 @@ function loadConfig(){
         var params=new URLSearchParams(location.search);
         var initTab=params.get('tab')||(location.hash.slice(1).split('/')[0]);
         cur=initTab&&cfg.sections&&cfg.sections[initTab]?initTab:j.homeId||Object.keys(j.sections||{})[0]||'home';
-        if(params.get('page'))ensurePageState(cur).page=parseInt(params.get('page'))||1;
-        if(params.get('q'))state.searchQuery=params.get('q');
         renderNav();updateActive();loadData(cur);preloadAll();
       })
       .catch(function(err){
         retryCount++;
         var area=$('.content-area');
         if(area)area.innerHTML='<div class="loading">拉取加载数据中...<span class="loading-sub">('+retryCount+'/3)</span><div class="loading-bar"></div></div>';
-        if(retryCount>=3){
-          area.innerHTML='<div class="err">无法拉取加载数据...</div>';
-          hardRecover('config load failed');
-        }else setTimeout(loadConfig,1000);
+        if(retryCount>=3){area.innerHTML='<div class="err">无法拉取加载数据...</div>';hardRecover('config load failed');}
+        else setTimeout(loadConfig,1000);
       });
   });
 }
@@ -457,7 +408,7 @@ function switchTab(id,fromBroadcast){
   state.scrollPos[cur]=window.scrollY||document.querySelector('.content-area').scrollTop;
   cur=id;
   var ps=ensurePageState(id);
-  ps.page=1;ps.filtered=null;
+  ps.page=1;ps.filtered=null;state.searchQuery="";
   updateActive();loadData(id);
   window.scrollTo(0,0);
   history.replaceState(null,null,"#"+id);
@@ -466,96 +417,105 @@ function switchTab(id,fromBroadcast){
 
 window.addEventListener("hashchange",SCHED.throttle(function(){
   var hash=location.hash.slice(1).split('/')[0];
-  if(hash&&hash!==cur&&cfg.sections&&cfg.sections[hash]){
-    state.route=hash;cur=hash;
-    var ps=ensurePageState(hash);ps.page=1;ps.filtered=null;
-    updateActive();loadData(cur);
-  }
+  if(hash&&hash!==cur&&cfg.sections&&cfg.sections[hash]){cur=hash;ensurePageState(hash).page=1;updateActive();loadData(cur);}
 },200));
 
 function updateActive(){
   $$(".mobile-nav button").forEach(function(btn){btn.classList.toggle("active",btn.dataset.id===cur);});
   var mh=$('.mobile-header');if(mh)mh.textContent=((cfg.bottomNav||[]).find(function(s){return s.id===cur;})||{}).name||"";
   var ph=$('.pc-header');if(ph)ph.textContent=((cfg.bottomNav||[]).find(function(s){return s.id===cur;})||{}).name||cfg.siteName||"";
-  var searchBar=$('#sectionSearch');
-  if(searchBar){
-    if(getSearchable(cur)){searchBar.classList.add("active");renderSearchHistory();}
-    else searchBar.classList.remove("active");
-  }
-}
-
-function renderSearchHistory(){
-  var key='searchHist_'+cur;
-  var hist=JSON.parse(sessionStorage.getItem(key)||'[]');
-  var histHtml=hist.length?'<div class="search-history">'+hist.map(function(h){
-    return'<span data-action="history" data-q="'+h.replace(/"/g,'&quot;')+'">'+h+'</span>';
-  }).join('')+'</div>':'';
-  $('#searchHistory').innerHTML=histHtml;
-  if(state.searchQuery)$('#secKey').value=state.searchQuery;
 }
 
 function loadData(id){
   var area=$('.content-area');
-  area.innerHTML='<div class="loading">拉取加载数据中...<span class="loading-sub">('+retryCount+'/3)</span><div class="loading-bar"></div></div>';
-  if(cacheAll[id]){var ps=ensurePageState(id);ps.list=cacheAll[id].slice();renderCurrent();return;}
+  area.innerHTML='<div class="loading">拉取加载数据中...<span class="loading-sub">('+(retryCount||0)+'/3)</span><div class="loading-bar"></div></div>';
+
+  if(cacheAll[id]){
+    sortAndRender(id);
+    return;
+  }
 
   enqueueRequest(function(){
     return fetchWithTimeout((cfg.apiBase||"https://api.tianbin.org/api/")+cfg.sections[id].api+"?_="+Date.now())
       .then(function(r){if(!r.ok)throw new Error("data load failed "+r.status);return r.json();})
       .then(function(j){
         cacheAll[id]=j;retryCount=0;mark('dataLoaded_'+id);
-        if(getSortBy(id)==="date"){
-          cacheAll[id].sort(function(a,b){
-            var da=new Date(a.date),db=new Date(b.date);
-            return getSortOrder(id)==="desc"?db-da:da-db;
-          });
-        }
-        var ps=ensurePageState(id);ps.list=cacheAll[id].slice();
-        renderCurrent();
+        sortAndRender(id);
       })
       .catch(function(){
         retryCount++;
         area.innerHTML='<div class="loading">拉取加载数据中...<span class="loading-sub">('+retryCount+'/3)</span><div class="loading-bar"></div></div>';
-        if(retryCount>=3){
-          area.innerHTML='<div class="err">无法拉取加载数据...</div>';
-          hardRecover('data load failed: '+id);
-        }else setTimeout(function(){loadData(id);},1000);
+        if(retryCount>=3){area.innerHTML='<div class="err">无法拉取加载数据...</div>';hardRecover('data load failed: '+id);}
+        else setTimeout(function(){loadData(id);},1000);
       });
   });
+}
+
+function sortAndRender(id){
+  var list=cacheAll[id]||[];
+  var sortBy=getSortBy(id),sortOrder=getSortOrder(id);
+
+  if(sortBy==="date"){
+    list.sort(function(a,b){
+      var da=new Date(a.date||0),db=new Date(b.date||0);
+      return sortOrder==="desc"?db-da:da-db;
+    });
+  }
+
+  var ps=ensurePageState(id);
+  ps.list=list.slice();
+  ps.page=1;
+  ps.total=Math.max(1,Math.ceil(list.length/getPerPage(id)));
+  renderCurrent();
 }
 
 function renderCurrent(){
   renderVersion++;
   var ps=ensurePageState(cur);
   var list=ps.filtered||ps.list;
+
+  if(!list||list.length===0){
+    $('.content-area').innerHTML='<div class="loading" style="color:var(--text-tertiary)">暂无内容</div>';
+    return;
+  }
+
   var perPage=getPerPage(cur);
   ps.total=Math.max(1,Math.ceil(list.length/perPage));
   if(ps.page>ps.total)ps.page=ps.total;
+  if(ps.page<1)ps.page=1;
+
   var area=$('.content-area');
   var html='';
 
   if(getSearchable(cur)){
-    html+='<div class="section-search active"><input id="secKey" placeholder="输入关键词查询" value="'+(state.searchQuery||'')+'"><button type="button" data-action="search">查询</button><div class="search-history" id="searchHistory"></div></div>';
+    html+='<div class="section-search active">';
+    html+='<input id="secKey" placeholder="输入关键词查询" value="'+(state.searchQuery||'')+'">';
+    html+='<button type="button" data-action="search">查询</button>';
+    html+='<div class="search-history" id="searchHistory"></div>';
+    html+='</div>';
   }
 
-  var start=(ps.page-1)*perPage,end=Math.min(start+perPage,list.length);
+  var start=(ps.page-1)*perPage, end=Math.min(start+perPage,list.length);
   for(var i=start;i<end;i++){
     var item=list[i];
-    html+='<div class="list-item" data-action="open" data-sid="'+cur+'" data-idx="'+i+'"><div class="title">'+(state.searchQuery?highlightText(item.title||"",state.searchQuery):(item.title||""))+'</div><div class="meta">'+(item.date||"")+' · '+(item.author||"")+'</div></div>';
+    if(!item)continue;
+    html+='<div class="list-item" data-action="open" data-sid="'+cur+'" data-idx="'+i+'">';
+    html+='<div class="title">'+(state.searchQuery?highlightText(item.title||"",state.searchQuery):(item.title||""))+'</div>';
+    html+='<div class="meta">'+(item.date||"")+' · '+(item.author||"")+'</div>';
+    html+='</div>';
   }
 
-  html+='<div class="pager"><button type="button" data-action="prev" '+(ps.page<=1?'disabled':'')+'>上一页</button><span class="page-info">'+ps.page+'/'+ps.total+'</span><button type="button" data-action="next" '+(ps.page>=ps.total?'disabled':'')+'>下一页</button></div>';
+  html+='<div class="pager">';
+  html+='<button type="button" data-action="prev"'+(ps.page<=1?' disabled':'')+'>上一页</button>';
+  html+='<span class="page-info">'+ps.page+' / '+ps.total+'</span>';
+  html+='<button type="button" data-action="next"'+(ps.page>=ps.total?' disabled':'')+'>下一页</button>';
+  html+='</div>';
   html+='<div class="sentinel" id="scrollSentinel"></div>';
+
   area.innerHTML=html;
 
-  if(getSearchable(cur))renderSearchHistory();
-
-  var sentinel=$('#scrollSentinel');
-  if(sentinel&&'IntersectionObserver' in window){
-    var io=new IntersectionObserver(function(entries){
-      if(entries[0].isIntersecting){secNext();io.disconnect();}
-    },{rootMargin:'100px'});
-    io.observe(sentinel);
+  if(getSearchable(cur)){
+    renderSearchHistory();
   }
 }
 
@@ -575,8 +535,17 @@ var debouncedSearch=SCHED.debounce(function(){
 },300);
 
 function secSearch(){debouncedSearch();}
-function secPrev(){var ps=ensurePageState(cur);if(ps.page>1){ps.page--;renderCurrent();window.scrollTo(0,0);}}
-function secNext(){var ps=ensurePageState(cur);if(ps.page<ps.total){ps.page++;renderCurrent();window.scrollTo(0,0);}}
+function secPrev(){var ps=ensurePageState(cur);if(ps.page>1){ps.page--;renderCurrent();window.scrollTo(0,0);$('.content-area').scrollTop=0;}}
+function secNext(){var ps=ensurePageState(cur);if(ps.page<ps.total){ps.page++;renderCurrent();window.scrollTo(0,0);$('.content-area').scrollTop=0;}}
+
+function renderSearchHistory(){
+  var key='searchHist_'+cur;
+  var hist=JSON.parse(sessionStorage.getItem(key)||'[]');
+  var histHtml=hist.length?'<div class="search-history">'+hist.map(function(h){
+    return'<span data-action="history" data-q="'+h.replace(/"/g,'&quot;')+'">'+h+'</span>';
+  }).join('')+'</div>':'';var sh=$('#searchHistory');if(sh)sh.innerHTML=histHtml;
+  if(state.searchQuery){var sk=$('#secKey');if(sk)sk.value=state.searchQuery;}
+}
 
 var htmlRetryCount=0,htmlRetryTimer=null,htmlCurrentIdx=-1,htmlCurrentSid="",currentRawHtml='';
 
@@ -620,30 +589,32 @@ function openHtmlModal(sid,idx){
   }
   contentHtml+='<button type="button" class="html-reload-btn" data-action="reload">↻</button>';
   body.innerHTML=contentHtml;
-  body.querySelectorAll('a').forEach(function(a){a.setAttribute('target','_top');a.setAttribute('rel','noopener noreferrer');});
-  body.querySelectorAll('form').forEach(function(f){f.setAttribute('target','_top');});
   var iframe=$('#subIframe');
-  if(iframe){iframe.onload=function(){htmlRetryCount=0;};iframe.onerror=function(){subFrameRetry();};}
+  if(iframe){iframe.onload=function(){htmlRetryCount=0;};}
   modal.classList.add("active");
-  subFrameRetry();
 }
 
-function subFrameRetry(){
-  htmlRetryCount++;
-  var iframe=$('#subIframe');
-  if(!iframe)return;
-  if(htmlRetryCount>3){
-    try{
-      if(iframe.contentWindow&&iframe.contentWindow.caches){
-        iframe.contentWindow.caches.keys().then(function(names){names.forEach(function(n){iframe.contentWindow.caches.delete(n);});});
-      }else{var src=iframe.src;iframe.src='';setTimeout(function(){iframe.src=src+'?_='+Date.now();},50);}
-    }catch(e){var src=iframe.src;iframe.src='';setTimeout(function(){iframe.src=src+'?_='+Date.now();},50);}
-    htmlRetryCount=0;return;
+function openImg(u){
+  var im=document.querySelector('.img-modal');
+  if(!im)return;
+  var img=im.querySelector('img');
+  if(img)img.src=u;
+  var watermark=im.querySelector('.img-watermark span');
+  if(watermark){watermark.textContent=(cfg.security&&cfg.security.watermarkText)||'天彬TianBIN';}
+  im.classList.add('active');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(sel){
+  var el=document.querySelector(sel);
+  if(el)el.classList.remove('active');
+  if(sel.indexOf('img-modal')>=0){document.body.style.overflow='';}
+  if(sel.indexOf('html-modal')>=0){
+    htmlRetryCount=0;
+    if(htmlRetryTimer){clearTimeout(htmlRetryTimer);htmlRetryTimer=null;}
+    var b=$('.html-modal-body');if(b)b.innerHTML='';
+    state.modalStack.pop();
   }
-  var src=iframe.src;iframe.src='';
-  setTimeout(function(){iframe.src=src+(src.indexOf('?')>=0?'&':'?')+'_='+Date.now();},50);
-  if(htmlRetryTimer)clearTimeout(htmlRetryTimer);
-  htmlRetryTimer=setTimeout(subFrameRetry,1500);
 }
 
 function reloadSubFrame(){
@@ -656,25 +627,6 @@ function reloadSubFrame(){
     var src=iframe.src;iframe.src='';
     setTimeout(function(){iframe.src=src+(src.indexOf('?')>=0?'&':'?')+'_='+Date.now();},50);
   }
-  var reloadBtn=document.querySelector('.html-reload-btn');
-  if(reloadBtn){reloadBtn.style.transform='rotate(360deg)';reloadBtn.style.transition='transform 0.5s';setTimeout(function(){reloadBtn.style.transform='rotate(0deg)';},500);}
-}
-
-function openImg(u){
-  var im=$('.img-modal');
-  im.querySelector("img").src=u;
-  im.classList.add("active");
-}
-
-function closeModal(sel){
-  var el=$(sel);
-  if(el)el.classList.remove("active");
-  if(sel.indexOf('html-modal')>=0){
-    htmlRetryCount=0;
-    if(htmlRetryTimer){clearTimeout(htmlRetryTimer);htmlRetryTimer=null;}
-    var b=$('.html-modal-body');if(b)b.innerHTML='';
-    state.modalStack.pop();
-  }
 }
 
 document.addEventListener('click',function(e){
@@ -684,37 +636,16 @@ document.addEventListener('click',function(e){
   var action=actionEl.dataset.action;
 
   switch(action){
-    case 'open':
-      openModal(actionEl.dataset.sid,Number(actionEl.dataset.idx));
-      break;
-    case 'search':
-      secSearch();
-      break;
-    case 'prev':
-      secPrev();
-      break;
-    case 'next':
-      secNext();
-      break;
-    case 'open-img':
-      openImg(actionEl.dataset.src);
-      break;
-    case 'open-html':
-      openHtmlModal(actionEl.dataset.sid,Number(actionEl.dataset.idx));
-      break;
-    case 'close-modal':
-      closeModal('.modal');
-      break;
-    case 'close-html':
-      closeModal('.html-modal');
-      break;
-    case 'reload':
-      reloadSubFrame();
-      break;
-    case 'history':
-      $('#secKey').value=actionEl.dataset.q;
-      secSearch();
-      break;
+    case 'open':openModal(actionEl.dataset.sid,Number(actionEl.dataset.idx));break;
+    case 'search':secSearch();break;
+    case 'prev':secPrev();break;
+    case 'next':secNext();break;
+    case 'open-img':openImg(actionEl.dataset.src);break;
+    case 'open-html':openHtmlModal(actionEl.dataset.sid,Number(actionEl.dataset.idx));break;
+    case 'close-modal':closeModal('.modal');break;
+    case 'close-html':closeModal('.html-modal');break;
+    case 'reload':reloadSubFrame();break;
+    case 'history':$('#secKey').value=actionEl.dataset.q;secSearch();break;
   }
 });
 
@@ -723,22 +654,17 @@ document.addEventListener('DOMContentLoaded',function(){
   if(m)m.addEventListener('click',function(e){if(e.target===e.currentTarget)closeModal('.modal');});
   var hm=$('.html-modal');
   if(hm)hm.addEventListener('click',function(e){if(e.target===e.currentTarget)closeModal('.html-modal');});
-  var im=$('.img-modal');
-  if(im)im.addEventListener('click',function(e){if(e.target===e.currentTarget||e.target.tagName==='IMG')closeModal('.img-modal');});
+  var im=document.querySelector('.img-modal');
+  if(im)im.addEventListener('click',function(e){if(e.target===e.currentTarget||e.target.tagName==='IMG'||e.target.classList.contains('img-container'))closeModal('.img-modal');});
   mark('domReady');
 });
 
 document.addEventListener('keydown',function(e){
   if(e.altKey&&e.key>='1'&&e.key<='5'){
-    e.preventDefault();
-    var idx=parseInt(e.key)-1;
-    var navItem=(cfg.bottomNav||[])[idx];
-    if(navItem)switchTab(navItem.id);
+    e.preventDefault();var idx=parseInt(e.key)-1;
+    var navItem=(cfg.bottomNav||[])[idx];if(navItem)switchTab(navItem.id);
   }
-  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){
-    e.preventDefault();
-    var inp=$('#secKey');if(inp)inp.focus();
-  }
+  if(e.key==='/'&&document.activeElement.tagName!=='INPUT'){$('#secKey').focus();e.preventDefault();}
   if(e.key==='Escape'){
     $$('.modal.active,.html-modal.active,.img-modal.active').forEach(function(el){
       if(el.classList.contains('modal'))closeModal('.modal');
@@ -753,5 +679,5 @@ loadConfig();
 mark('initDone');
 })();
 </script>
-</body
+</body>
 </html>
