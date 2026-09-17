@@ -641,6 +641,7 @@ body:not(.announce-lock) .content-area{overflow-y:auto!important;filter:none!imp
     if(getSearchable(cur))renderSearchHistory();
   }
 
+  
   function doSearch(){
     if(!getSearchable(cur))return;
     var k=$('#secKey').value.trim();
@@ -669,6 +670,7 @@ body:not(.announce-lock) .content-area{overflow-y:auto!important;filter:none!imp
     if(k&&hist.indexOf(k)<0){hist.unshift(k);hist=hist.slice(0,5);sessionStorage.setItem(key,JSON.stringify(hist));}
   }
 
+  
   function renderSearchHistory(){
     var key='searchHist_'+cur;
     var hist=JSON.parse(sessionStorage.getItem(key)||'[]');
@@ -712,6 +714,7 @@ body:not(.announce-lock) .content-area{overflow-y:auto!important;filter:none!imp
     modal.classList.add("active");
   }
 
+  
   function openHtmlModal(sid,idx,realId){
     var list=cacheAll[sid]||[];
     var item;
